@@ -1,13 +1,20 @@
 <article>
 	<h1><a href="{{ .Permalink }}">{{ .Title }}</a></h1>
-	<time datetime="{{ .Date.Format "2006-01-02T15:04:05" }}">{{ .Date.Format "02.01.2006 15:04" }}</time>
-	{{ range .Params.tags }}
-	<a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">{{ . }}</a>
+	<time datetime="{{ .Date | time.Format ":date_medium" }}">{{ .Date | time.Format ":date_medium" }}</time>
+	{{ if ne .Params.tags nil }}
+		/
+		{{ $lastElem := index .Params.tags (sub (len .Params.tags) 1) }}
+		{{ range .Params.tags }}
+			<a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">{{ . }}</a>
+			{{ if ne . $lastElem }}
+				/
+			{{ end }}
+		{{ end }}
 	{{ end }}
 	<div>
 		{{ .Summary }}
 		{{ if .Truncated }}
-			<a href="{{ .Permalink }}">Read more...</a>
+		<a href="{{ .Permalink }}">Read more...</a>
 		{{ end }}
 	</div>
 </article>

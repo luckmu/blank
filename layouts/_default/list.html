@@ -7,10 +7,14 @@
 		</div>
 		{{ end }}
 
-		{{ range .Paginator.Pages }}
-			{{ .Render "summary" }}
+		{{ if gt (len .Paginator.Pages) 0 }}
+			{{ range .Paginator.Pages }}
+				<a href="{{ .Permalink }}">{{ title .Name }}</a>
+			{{ end }}
+		{{ else }}
+			<p>There's no content right now.</p>
 		{{ end }}
+
 		{{ partial "pagination.html" . }}
 	</main>
-{{ partial "sidebar.html" . }}
 {{ end }}

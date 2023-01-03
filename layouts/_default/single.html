@@ -2,19 +2,19 @@
 	<main>
 		<article>
 			<h1>{{ .Title }}</h1>
-			<time datetime="{{ .Date.Format "2006-01-02T15:04:05" }}">{{ .Date.Format "02.01.2006 15:04" }}</time>
+			<div>
+				<p> Tags: 
+					{{ with .Params.tags }}
+						{{ range . }}
+							<a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">{{ title . }}</a>
+						{{ end }}
+					{{ end }}
+				</p>
+				<p>Date: <time datetime="{{ .Date | time.Format ":date_full" }}">{{ .Date | time.Format ":date_full" }}</time></p>
+			</div>
 			<div>
 				{{ .Content }}
 			</div>
-			{{ with .Params.tags }}
-			<div>
-				<ul id="tags">
-					{{ range . }}
-					<li><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">{{ . }}</a></li>
-					{{ end }}
-				</ul>
-			</div>
-			{{ end }}
 			{{ with .Site.DisqusShortname }}
 			<div>
 				{{ template "_internal/disqus.html" . }}
@@ -22,5 +22,4 @@
 			{{ end }}
 		</article>
 	</main>
-{{ partial "sidebar.html" . }}
 {{ end }}
